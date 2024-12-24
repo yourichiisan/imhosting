@@ -54,7 +54,7 @@ body{
   position: fixed;
   background: #0000005f;
   z-index: 2;
-  display: none;
+  display: flex;
   top: 0;
   left: 0;
   transition: 0.4s;
@@ -64,7 +64,7 @@ body{
   height: 100%;
   background: linear-gradient(#047C9E , #025574);
   position: fixed;
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: center;
   z-index: 2;
