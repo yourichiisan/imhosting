@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://db.onlinewebfonts.com/c/623c7118249e082fe87a78e08506cb4b?family=Segoe+UI" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
+
+</head>
+<body>
+
+<div class="kaliii">
+  <div class="topppp">
+    <svg onclick="termmout()" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" style="fill: rgba(255, 255, 255, 1);cursor:pointer;margin:10px;transform: ;msFilter:;"><path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path></svg>
+  </div>
+  <textarea name="" id="">
+    # Configure logging
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
+    
+    #  market data generator
+    def generate_market_data():
+        return {
+            "BTC": round(random.uniform(20000, 60000), 2),
+            "ETH": round(random.uniform(1000, 5000), 2),
+            "DOGE": round(random.uniform(0.05, 0.5), 4),
+        }
+    
+    # Strategy example: Simple moving average ( logic)
+    def trading_strategy(prices, symbol):
+        if symbol not in prices or len(prices[symbol]) < 5:
+            return "HOLD"
+        #  strategy: Buy if the last price is lower than the average of the last 5 prices
+        last_five_avg = sum(prices[symbol][-5:]) / 5
+        if prices[symbol][-1] < last_five_avg:
+            return "BUY"
+        elif prices[symbol][-1] > last_five_avg:
+            return "SELL"
+        return "HOLD"
+    
+    # Trading Bot
+    class TradingBot:
+        def __init__(self, starting_balance=10000):
+            self.balance = starting_balance
+            self.portfolio = {"BTC": 0, "ETH": 0, "DOGE": 0}
+            self.prices = {"BTC": [], "ETH": [], "DOGE": []}
+    
+        def update_prices(self):
+            market_data = generate_market_data()
+            for symbol, price in market_data.items():
+                self.prices[symbol].append(price)
+                if len(self.prices[symbol]) > 50:  # Limit price history to the last 50
+                    self.prices[symbol].pop(0)
+            return market_data
+    
+        def execute_trade(self, symbol, action, amount):
+            current_price = self.prices[symbol][-1]
+            if action == "BUY" and self.balance >= amount * current_price:
+                self.balance -= amount * current_price
+                self.portfolio[symbol] += amount
+                logging.info(f"Bought {amount} {symbol} at ${current_price} each. New balance: ${self.balance:.2f}")
+            elif action == "SELL" and self.portfolio[symbol] >= amount:
+                self.balance += amount * current_price
+                self.portfolio[symbol] -= amount
+                logging.info(f"Sold {amount} {symbol} at ${current_price} each. New balance: ${self.balance:.2f}")
+            else:
+                logging.warning(f"Failed to execute {action} for {symbol}. Insufficient balance or holdings.")
+    
+        def run(self, iterations=100, sleep_time=1):
+            for _ in range(iterations):
+                market_data = self.update_prices()
+                logging.info(f"Market Data: {market_data}")
+    
+                for symbol in market_data.keys():
+                    action = trading_strategy(self.prices, symbol)
+                    if action == "BUY":
+                        self.execute_trade(symbol, "BUY", amount=0.01)  # Buy 0.01 of the asset
+                    elif action == "SELL":
+                        self.execute_trade(symbol, "SELL", amount=0.01)  # Sell 0.01 of the asset
+    
+                logging.info(f"Portfolio: {self.portfolio}")
+                logging.info(f"Balance: ${self.balance:.2f}")
+                time.sleep(sleep_time)
+    
+    # Run the bot
+    if __name__ == "__main__":
+        bot = TradingBot()
+        bot.run(iterations=10, sleep_time=2)
+      
+        import random
+        import time
+        
+        class MarketData:
+            def __init__(self, symbols):
+                self.symbols = symbols
+                self.data = {symbol: [] for symbol in symbols}
+                self.max_history = 100
+        
+            def generate_prices(self):
+                generated_data = {}
+                for symbol in self.symbols:
+                    price = self._generate_price(symbol)
+                    self.data[symbol].append(price)
+                    if len(self.data[symbol]) > self.max_history:
+                        self.data[symbol].pop(0)
+                    generated_data[symbol] = price
+                return generated_data
+        
+            def _generate_price(self, symbol):
+                base_prices = {"BTC": 40000, "ETH": 2000, "DOGE": 0.1, "SOL": 20}
+                volatility = {"BTC": 5000, "ETH": 500, "DOGE": 0.05, "SOL": 5}
+                return round(random.uniform(
+                    base_prices[symbol] - volatility[symbol],
+                    base_prices[symbol] + volatility[symbol]
+                ), 4)
+
+                class TradingStrategies:
+def __init__(self):
+pass
+
+def moving_average(self, price_history, window=5):
+if len(price_history) < window:
+    return None
+return sum(price_history[-window:]) / window
+
+def simple_strategy(self, symbol, price_history):
+if len(price_history) < 10:
+    return "HOLD"
+short_term = self.moving_average(price_history, window=5)
+long_term = self.moving_average(price_history, window=10)
+if short_term and long_term:
+    if short_term < long_term:
+        return "BUY"
+    elif short_term > long_term:
+        return "SELL"
+return "HOLD"
+
+def random_strategy(self):
+return random.choice(["BUY", "SELL", "HOLD"])
+
+class Portfolio:
+def __init__(self, initial_balance):
+self.balance = initial_balance
+self.holdings = {}
+
+def update_holdings(self, symbol, quantity):
+if symbol not in self.holdings:
+    self.holdings[symbol] = 0
+self.holdings[symbol] += quantity
+
+def can_buy(self, symbol, price, quantity):
+return self.balance >= price * quantity
+
+def buy(self, symbol, price, quantity):
+if self.can_buy(symbol, price, quantity):
+    self.balance -= price * quantity
+    self.update_holdings(symbol, quantity)
+    return True
+return False
+
+def can_sell(self, symbol, quantity):
+return self.holdings.get(symbol, 0) >= quantity
+
+def sell(self, symbol, price, quantity):
+if self.can_sell(symbol, quantity):
+    self.balance += price * quantity
+    self.update_holdings(symbol, -quantity)
+    return True
+return False
+
+def __str__(self):
+return f"Balance: ${self.balance:.2f}, Holdings: {self.holdings}"
+.
+├── market_data.py
+├── strategies.py
+├── portfolio.py
+├── trading_bot.py
+
+pip install flask
+
+from flask import Flask, request, jsonify
+import random
+import time
+
+app = Flask(__name__)
+
+# Simulated market data
+MARKET_DATA = {
+"BTCUSDT": {"price": 40000, "volume": 1000},
+"ETHUSDT": {"price": 2000, "volume": 5000},
+"DOGEUSDT": {"price": 0.1, "volume": 1000000},
+"SOLUSDT": {"price": 20, "volume": 3000},
+}
+
+# User account data
+USER_DATA = {
+"balance": {"USDT": 10000, "BTC": 0.5, "ETH": 2, "DOGE": 1000, "SOL": 10},
+"order_history": [],
+}
+
+# Simulate real-time market price updates
+def update_market_data():
+for symbol in MARKET_DATA:
+MARKET_DATA[symbol]["price"] = round(
+    MARKET_DATA[symbol]["price"] * random.uniform(0.98, 1.02), 2
+)
+MARKET_DATA[symbol]["volume"] = round(
+    MARKET_DATA[symbol]["volume"] * random.uniform(0.9, 1.1), 2
+)
+
+
+@app.route("/api/v1/market/prices", methods=["GET"])
+def get_market_prices():
+"""Endpoint for market prices"""
+update_market_data()
+return jsonify({"success": True, "data": MARKET_DATA})
+
+
+@app.route("/api/v1/account/balance", methods=["GET"])
+def get_account_balance():
+"""Endpoint for account balance"""
+return jsonify({"success": True, "data": USER_DATA["balance"]})
+
+
+@app.route("/api/v1/order", methods=["POST"])
+def place_order():
+"""Endpoint for placing an order"""
+data = request.json
+symbol = data.get("symbol")
+side = data.get("side")  # BUY or SELL
+quantity = data.get("quantity")
+
+# Validate order
+if symbol not in MARKET_DATA:
+return jsonify({"success": False, "error": "Invalid symbol"}), 400
+if side not in ["BUY", "SELL"]:
+return jsonify({"success": False, "error": "Invalid side"}), 400
+if quantity <= 0:
+return jsonify({"success": False, "error": "Invalid quantity"}), 400
+
+price = MARKET_DATA[symbol]["price"]
+cost = price * quantity
+
+# Process order
+if side == "BUY":
+if USER_DATA["balance"]["USDT"] >= cost:
+    USER_DATA["balance"]["USDT"] -= cost
+    USER_DATA["balance"][symbol.replace("USDT", "")] += quantity
+    USER_DATA["order_history"].append(
+        {"symbol": symbol, "side": side, "quantity": quantity, "price": price}
+    )
+    return jsonify({"success": True, "message": "Order placed successfully"})
+else:
+    return jsonify({"success": False, "error": "Insufficient balance"}), 400
+
+if side == "SELL":
+asset = symbol.replace("USDT", "")
+if USER_DATA["balance"].get(asset, 0) >= quantity:
+    USER_DATA["balance"][asset] -= quantity
+    USER_DATA["balance"]["USDT"] += cost
+    USER_DATA["order_history"].append(
+        {"symbol": symbol, "side": side, "quantity": quantity, "price": price}
+    )
+    return jsonify({"success": True, "message": "Order placed successfully"})
+else:
+    return jsonify({"success": False, "error": "Insufficient holdings"}), 400
+
+
+@app.route("/api/v1/orders/history", methods=["GET"])
+def get_order_history():
+"""Endpoint for order history"""
+return jsonify({"success": True, "data": USER_DATA["order_history"]})
+
+
+@app.route("/api/v1/ping", methods=["GET"])
+def ping():
+"""Health check endpoint"""
+return jsonify({"success": True, "message": "Pong!"})
+
+
+@app.route("/api/v1/time", methods=["GET"])
+def server_time():
+"""Server time endpoint"""
+return jsonify({"success": True, "data": {"serverTime": int(time.time() * 1000)}})
+
+
+@app.route("/api/v1/exchange/info", methods=["GET"])
+def exchange_info():
+"""Exchange information endpoint"""
+symbols = [
+{"symbol": key, "baseAsset": key.replace("USDT", ""), "quoteAsset": "USDT"}
+for key in MARKET_DATA
+]
+return jsonify({"success": True, "data": {"symbols": symbols}})
+
+
+if __name__ == "__main__":
+app.run(debug=True, port=5000)
+
+import requests
+
+BASE_URL = "http://127.0.0.1:5000/api/v1"
+
+# Get market prices
+response = requests.get(f"{BASE_URL}/market/prices")
+print(response.json())
+
+# Get account balance
+response = requests.get(f"{BASE_URL}/account/balance")
+print(response.json())
+
+# Place an order
+order_data = {"symbol": "BTCUSDT", "side": "BUY", "quantity": 0.01}
+response = requests.post(f"{BASE_URL}/order", json=order_data)
+print(response.json())
+
+# Get order history
+response = requests.get(f"{BASE_URL}/orders/history")
+print(response.json())
+
+import requests
+
+BASE_URL = "http://127.0.0.1:5000/api/v1"
+
+# Get market prices
+response = requests.get(f"{BASE_URL}/market/prices")
+print(response.json())
+
+# Get account balance
+response = requests.get(f"{BASE_URL}/account/balance")
+print(response.json())
+
+# Place an order
+order_data = {"symbol": "BTCUSDT", "side": "BUY", "quantity": 0.01}
+response = requests.post(f"{BASE_URL}/order", json=order_data)
+print(response.json())
+
+# Get order history
+response = requests.get(f"{BASE_URL}/orders/history")
+print(response.json())
+
+  </textarea>
+</div>
+
+<div id="modal1" class="modal1">
+  <center style="height: 150px;width: 100%;display: flex;align-items: center;justify-content: center;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" style="fill:#474747"><path d="M19 4h-2V2h-2v2H9V2H7v2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2zm.002 16H5V8h14l.002 12z"></path><path d="M11 10h2v5h-2zm0 6h2v2h-2z"></path></svg>
+  </center>
+  <center style="height: 50px;width: 100%;border-top: 1.5px solid #6F6F6F;gap: 10px;display: flex;align-items: center;justify-content: center;padding-top: 10px;">
+    <div onclick="cancell()" style="flex: 1;" class="terminate">
+      cancel
+    </div>
+    <div onclick="termmin()" style="flex: 1;" class="terminate">
+      terminate
+    </div>
+  </center>
+</div>
+
+  <div id="blurrr" class="backfil">
+    <div class="progressss">
+
+    </div>
+
+    <form class="form-container" enctype='multipart/form-data'>
+      <div class="upload-files-container">
+        <div class="drag-file-area">
+          <span class="material-icons-outlined upload-icon"> file_upload </span>
+          <h3 class="dynamic-message"> Drag & drop your ID here </h3>
+          <label class="label">  <span class="browse-files"> <input type="file" class="default-file-input"/> <span class="browse-files-text">browse file</span> <span>from device</span> </span> </label>
+        </div>
+        <span class="cannot-upload-message"> <span class="material-icons-outlined">error</span> Please select a file first <span class="material-icons-outlined cancel-alert-button">cancel</span> </span>
+        <div class="file-block">
+          <div class="file-info"> <span class="material-icons-outlined file-icon">description</span> <span class="file-name"> </span> | <span class="file-size">  </span> </div>
+          <span class="material-icons remove-file-icon">delete</span>
+          <div class="progress-bar"> </div>
+        </div>
+        <button onclick="idd()" type="button" class="upload-button"> Upload </button>
+      </div>
+    </form>
+  </div>
+  <div class="login">
+
+    <div id="toppp" class="toop-bar">
+
+    </div>
+
+    <div class="box-login">
+      <div class="top-log">
+        <img width="400px" src="InMotion.png" alt="">
+      </div>
+      <center style="    width: 80%;
+      text-align: start;
+      margin: 30px 14px 10px 0px;">
+        <label style="color: white;" for="USERNAME">USERNAME</label><br><br>
+        <input placeholder="Enter your username" class="log-i" type="text" name="" id="">
+      </center>
+      <center style="    width: 80%;
+      text-align: start;
+      margin: 10px 14px 10px 0px;">
+        <label style="color: white;" for="USERNAME">PASSWORD</label><br><br>
+        <input placeholder="Enter your password" class="log-i" type="password" name="" id="">
+      </center>
+      <center style="    width: 80%;
+      text-align: start;
+      margin: 10px 14px 10px 0px;">
+    <div onclick="vpslog()" class="buttonlo">
+      log in
+    </div>
+      </center>
+    </div>
+
+    <div class="bottom-logingg">
+      <center style="display: flex;justify-content: space-between;width: 60%;margin-top: 20px;color: #0390b7;">
+
+        <span style="cursor: pointer;">
+          العربية 
+        </span>
+        <span style="cursor: pointer;">
+          čeština  
+        </span>
+        <span style="cursor: pointer;">
+          dansk  
+        </span>
+        <span style="cursor: pointer;">
+          Deutsch  
+        </span>
+        <span style="cursor: pointer;">
+          Ελληνικά  
+        </span>
+        <span style="cursor: pointer;">
+          español 
+        </span>
+        <span style="cursor: pointer;">
+          español latinoamericano  
+        </span>
+        <span style="cursor: pointer;">
+          español de España  
+        </span>
+      </center>
+    </div>
+
+  </div>
+
+  <div class="top-bar">
+    <div class="span">
+      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" viewBox="0 0 24 24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="m11.998 17 7-8h-14z"></path></svg>
+    </div>
+    <span class="span">
+      cronous (v-2.34113)
+    </span>
+    <div class="span">
+      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" viewBox="0 0 24 24" style="fill: rgba(255, 255, 255, 1);transform: ;msFilter:;"><path d="M5 12H3v9h9v-2H5zm7-7h7v7h2V3h-9z"></path></svg>
+    </div>
+  </div>
+  <div class="main-box">
+
+    <div class="box">
+      <div class="box-1">
+        <div class="top-box">
+          <div onclick="terminate2()" id="acbtn" class="but1">
+              Open Accounts (A)
+          </div>
+          <div onclick="terminate1()" id="tradesbtn" class="but2">
+              Trades (T)
+          </div>
+          <div onclick="opnba()" id="but4" class="but4">
+              Accounting
+          </div>
+        </div>
+        <div class="col-1">
+
+          <div id="blll" class="balancess">
+
+            <center>
+              <div class="user-b">
+                <span class="span">
+                 Total Balance :<br> <span class="upppp" style="font-size: 30px;">67,251.2216</span>
+                </span>
+              </div>
+            </center>
+            <center>
+              <div class="user-c">
+                <div class="bot-c">
+                  <div class="bot">
+                    
+                  </div>
+                  <div onclick="location.href='pdf-1.pdf'" class="terminate">
+                    detail
+                  </div>
+                </div>
+                <div class="bot-c">
+                  <div class="bot">
+                    
+                  </div>
+                  <div onclick="location.href='pdf-2.pdf'" class="terminate">
+                    detail
+                  </div>
+                </div>
+                <div class="bot-c">
+                  <div class="bot">
+                    
+                  </div>
+                  <div onclick="location.href='pdf-3.pdf'" class="terminate">
+                    detail
+                  </div>
+                </div>
+                <div class="bot-c">
+                  <div class="bot">
+                    
+                  </div>
+                  <div onclick="location.href='pdf-3.pdf'" class="terminate">
+                    detail
+                  </div>
+                </div>
+                <div class="bot-c">
+                  <div class="bot">
+                    
+                  </div>
+                  <div onclick="location.href='pdf-4.pdf'" class="terminate">
+                    detail
+                  </div>
+                </div>
+                <div class="bot-c">
+                  <div class="bot">
+                    
+                  </div>
+                  <div onclick="location.href='pdf-5.pdf'" class="terminate">
+                    detail
+                  </div>
+                </div>
+                <div class="bot-c">
+                  <div class="bot">
+                    
+                  </div>
+                  <div onclick="location.href='pdf-6.pdf'" class="terminate">
+                    detail
+                  </div>
+                </div>
+                <div class="bot-c">
+                  <div class="bot">
+                    
+                  </div>
+                  <div onclick="location.href='pdf-7.pdf'" class="terminate">
+                    detail
+                  </div>
+                </div>
+              </div>
+            </center>
+
+          </div>
+
+
+          <div class="trades" id="trades">
+            <center style="height: 100%;">
+<!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+  <div class="tradingview-widget-container__widget"></div>
+ 
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-financials.js" async>
+  {
+  "isTransparent": true,
+  "largeChartUrl": "",
+  "displayMode": "regular",
+  "width": "100%",
+  "height": "100%",
+  "colorTheme": "dark",
+  "symbol": "CRYPTOCAP:PEPE",
+  "locale": "en"
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+ 
+ 
+            </center>
+            <div class="bot-trade">
+              
+            </div>
+          </div>
+
+       <div id="userrr">
+
+         <center>
+           <div class="user">
+            <div class="name-con">
+              Soroosh-aghaei
+            </div>
+            <div onclick="termm()" class="terminate">
+              terminate
+            </div>
+           </div>
+         </center>
+         <center>
+           <div class="user">
+            <div class="name-con">
+              Kiarad-kashfi
+            </div>
+            <div onclick="termm()" class="terminate">
+              terminate
+            </div>
+           </div>
+         </center>
+         <center>
+           <div class="user">
+            <div class="name-con">
+              Amirreza-eshghi
+            </div>
+            <div onclick="termm()" class="terminate">
+              terminate
+            </div>
+           </div>
+         </center>
+         <center>
+           <div class="user">
+            <div class="name-con">
+              Fateme
+            </div>
+            <div onclick="termm()" class="terminate">
+              terminate
+            </div>
+           </div>
+         </center>
+         <center>
+           <div class="user">
+            <div  class="name-con">
+              Sj
+            </div>
+            <div onclick="termm()" class="terminate">
+              terminate
+            </div>
+           </div>
+         </center>
+         <center>
+           <div class="user">
+            <div class="name-con">
+              Sj-mom
+            </div>
+            <div onclick="termm()" class="terminate">
+              terminate
+            </div>
+           </div>
+         </center>
+         <center>
+           <div class="user">
+            <div class="name-con">
+              Feeu
+            </div>
+            <div onclick="termm()" class="terminate">
+              terminate
+            </div>
+           </div>
+         </center>
+         <center>
+           <div class="user">
+            <div class="name-con">
+              Ali-barazesh
+            </div>
+            <div onclick="termm()" class="terminate">
+              terminate
+            </div>
+           </div>
+         </center>
+         <center>
+           <div class="user">
+            <div class="name-con">
+              Ronik
+            </div>
+            <div onclick="termm()" class="terminate">
+              terminate
+            </div>
+           </div>
+         </center>
+         <center>
+           <div class="user">
+            <div class="name-con">
+              Armin
+            </div>
+            <div onclick="termm()" class="terminate">
+              terminate
+            </div>
+           </div>
+         </center>
+         <center>
+           <div class="user">
+            <div class="name-con">
+              pooyan
+            </div>
+            <div onclick="termm()" class="terminate">
+              terminate
+            </div>
+           </div>
+         </center>
+         <center>
+           <div class="user">
+            <div class="name-con">
+              sheida-mom
+            </div>
+            <div onclick="termm()" class="terminate">
+              terminate
+            </div>
+           </div>
+         </center>
+         <center>
+           <div class="user">
+            <div class="name-con">
+              Mahdis
+            </div>
+            <div onclick="termm()" class="terminate">
+              terminate
+            </div>
+           </div>
+         </center>
+         <center>
+           <div class="user">
+            <div class="name-con">
+              Mahdis-mom
+            </div>
+            <div onclick="termm()" class="terminate">
+              terminate
+            </div>
+           </div>
+         </center>
+         <center>
+           <div class="user">
+            <div class="name-con">
+              Raha
+            </div>
+            <div onclick="termm()" class="terminate">
+              terminate
+            </div>
+           </div>
+         </center>
+         <center>
+           <div class="user">
+            <div class="name-con">
+              erfan
+            </div>
+            <div onclick="termm()" class="terminate">
+              terminate
+            </div>
+           </div>
+         </center>
+         <center>
+           <div class="user">
+            <div class="name-con">
+              sheida
+            </div>
+            <div onclick="termm()" class="terminate">
+              terminate
+            </div>
+           </div>
+         </center>
+         <center>
+           <div class="user">
+            <div class="name-con">
+              madray
+            </div>
+            <div onclick="termm()" class="terminate">
+              terminate
+            </div>
+           </div>
+         </center>
+         <center>
+           <div class="user">
+            <div class="name-con">
+              diba
+            </div>
+            <div onclick="termm()" class="terminate">
+              terminate
+            </div>
+           </div>
+         </center>
+         <center style="margin-bottom: 5px;">
+           <div class="user">
+            <div onclick="termm()" class="name-con">
+              yasamin
+            </div>
+            <div class="terminate">
+              terminate
+            </div>
+           </div>
+         </center>
+        
+
+       </div>
+
+        </div>
+
+
+        <div class="top-box-2">
+          <div class="but1">
+            Trade Action (K)
+          </div>
+        </div>
+          <div class="col-2">
+
+            <center style="display: flex;margin: 10px;">
+              <select name="" id="">
+                <option value="0.000%">0.000%</option>
+                <option value="0.000%">1.420%</option>
+                <option value="0.000%">1.1323%</option>
+                <option value="0.000%">1.150%</option>
+                <option value="0.000%">1.103%</option>
+                <option value="0.000%">1.112%</option>
+                <option value="0.000%">1.132%</option>
+                <option value="0.000%">1.193%</option>
+              </select>
+              <div class="nse">
+                select trade
+              </div>
+            </center>
+            <center style="display: flex;flex-direction:column;margin: 10px;align-items: start;">
+                <div class="span">
+                  UPDATED STOPLOSS TO : 0.000%
+                </div>
+                <div class="span">
+                  add one unit top position of <strong>SIZE</strong> : 31,032$
+                </div>
+            </center>
+            <center style="display: flex;margin: 10px;">
+              <div class="nse">
+                PYRAMID
+              </div>
+              <input type="number" value="0" name="" id="">
+              <div class="nse1">
+                Unit
+              </div>
+            </center>
+            <center style="display: flex;margin: 5px 10px;">
+              <div class="nse">
+                UPDATE STOPLOSS
+              </div>
+              <input type="number" value="0" name="" id="">
+              <div class="nse1">
+                Stop Price
+              </div>
+            </center>
+            <center style="display: flex;margin: 5px 10px;">
+              <div class="nse">
+                UPDATE OPEN
+              </div>
+              <input type="number" value="0" name="" id="">
+              <div class="nse1">
+                Opening Price
+              </div>
+            </center>
+            <center style="display: flex;margin: 5px 10px;">
+              <div class="nse">
+                CLOSE POSITION
+              </div>
+              <input type="number" value="0" name="" id="">
+              <div class="nse1">
+                Close Price
+              </div>
+            </center>
+            <center style="display: flex;margin: 5px 10px;gap: 10px;">
+              <div style="flex: 1;  cursor: no-drop;
+" class="nse">
+                OPEN ORDER
+              </div>
+              <div style="flex: 1;  cursor: no-drop;
+" class="nse">
+                ORDER NOT HIT YET
+              </div>
+              <div style="flex: 1;background: #6f6f6f;color: #1E1E1E;  cursor: no-drop;
+" class="nse">
+                AUTO
+              </div>
+             
+            
+            </center>
+
+          </div>
+
+
+      </div>
+      <div class="box-2">
+
+        <div style="  margin-top: 40px;" class="top-box">
+          <div class="but1">
+            AUTOMATED (C)
+          </div>
+          <div class="but3">
+            MANUAL
+          </div>
+        </div>
+        <div class="col-3">
+          <!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container" style="height:100%;width:100%;border-right: 1px solid #6F6F6F;">
+  <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+  {
+  "autosize": true,
+  "symbol": "CRYPTOCAP:PEPE",
+  "interval": "D",
+  "timezone": "Etc/UTC",
+  "theme": "dark",
+  "style": "10",
+  "locale": "en",
+  "backgroundColor": "#1E1E1E",
+  "gridColor": "#6F6F6F",
+  "hide_top_toolbar": true,
+  "hide_legend": true,
+  "allow_symbol_change": false,
+  "save_image": false,
+  "calendar": false,
+  "hide_volume": true,
+  "support_host": "https://www.tradingview.com"
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+ 
+          <!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container" style="height:100%;width:100%;border-left: 1px solid #6F6F6F;">
+  <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+  {
+  "autosize": true,
+  "symbol": "CRYPTOCAP:PEPE",
+  "interval": "D",
+  "timezone": "Etc/UTC",
+  "theme": "dark",
+  "style": "1",
+  "locale": "en",
+  "backgroundColor": "#1E1E1E",
+  "gridColor": "#6F6F6F",
+  "hide_top_toolbar": true,
+  "hide_legend": true,
+  "allow_symbol_change": false,
+  "save_image": false,
+  "calendar": false,
+  "hide_volume": true,
+  "support_host": "https://www.tradingview.com"
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+ 
+        </div>
+        <div style="  margin-top: 20px;" class="top-box">
+          <div class="but1">
+            TRADING CONSOLE
+          </div>
+          <div class="but3">
+            UPDATE
+          </div>
+        </div>
+        <div class="col-4">
+          
+          <textarea id="w3review" name="w3review" rows="4" cols="50">
+            
+            import random
+            import time
+            import logging
+            
+            # Configure logging
+            logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
+            
+            #  market data generator
+            def generate_market_data():
+                return {
+                    "BTC": round(random.uniform(20000, 60000), 2),
+                    "ETH": round(random.uniform(1000, 5000), 2),
+                    "DOGE": round(random.uniform(0.05, 0.5), 4),
+                }
+            
+            # Strategy example: Simple moving average ( logic)
+            def trading_strategy(prices, symbol):
+                if symbol not in prices or len(prices[symbol]) < 5:
+                    return "HOLD"
+                #  strategy: Buy if the last price is lower than the average of the last 5 prices
+                last_five_avg = sum(prices[symbol][-5:]) / 5
+                if prices[symbol][-1] < last_five_avg:
+                    return "BUY"
+                elif prices[symbol][-1] > last_five_avg:
+                    return "SELL"
+                return "HOLD"
+            
+            # Trading Bot
+            class TradingBot:
+                def __init__(self, starting_balance=10000):
+                    self.balance = starting_balance
+                    self.portfolio = {"BTC": 0, "ETH": 0, "DOGE": 0}
+                    self.prices = {"BTC": [], "ETH": [], "DOGE": []}
+            
+                def update_prices(self):
+                    market_data = generate_market_data()
+                    for symbol, price in market_data.items():
+                        self.prices[symbol].append(price)
+                        if len(self.prices[symbol]) > 50:  # Limit price history to the last 50
+                            self.prices[symbol].pop(0)
+                    return market_data
+            
+                def execute_trade(self, symbol, action, amount):
+                    current_price = self.prices[symbol][-1]
+                    if action == "BUY" and self.balance >= amount * current_price:
+                        self.balance -= amount * current_price
+                        self.portfolio[symbol] += amount
+                        logging.info(f"Bought {amount} {symbol} at ${current_price} each. New balance: ${self.balance:.2f}")
+                    elif action == "SELL" and self.portfolio[symbol] >= amount:
+                        self.balance += amount * current_price
+                        self.portfolio[symbol] -= amount
+                        logging.info(f"Sold {amount} {symbol} at ${current_price} each. New balance: ${self.balance:.2f}")
+                    else:
+                        logging.warning(f"Failed to execute {action} for {symbol}. Insufficient balance or holdings.")
+            
+                def run(self, iterations=100, sleep_time=1):
+                    for _ in range(iterations):
+                        market_data = self.update_prices()
+                        logging.info(f"Market Data: {market_data}")
+            
+                        for symbol in market_data.keys():
+                            action = trading_strategy(self.prices, symbol)
+                            if action == "BUY":
+                                self.execute_trade(symbol, "BUY", amount=0.01)  # Buy 0.01 of the asset
+                            elif action == "SELL":
+                                self.execute_trade(symbol, "SELL", amount=0.01)  # Sell 0.01 of the asset
+            
+                        logging.info(f"Portfolio: {self.portfolio}")
+                        logging.info(f"Balance: ${self.balance:.2f}")
+                        time.sleep(sleep_time)
+            
+            # Run the bot
+            if __name__ == "__main__":
+                bot = TradingBot()
+                bot.run(iterations=10, sleep_time=2)
+              
+                import random
+                import time
+                
+                class MarketData:
+                    def __init__(self, symbols):
+                        self.symbols = symbols
+                        self.data = {symbol: [] for symbol in symbols}
+                        self.max_history = 100
+                
+                    def generate_prices(self):
+                        generated_data = {}
+                        for symbol in self.symbols:
+                            price = self._generate_price(symbol)
+                            self.data[symbol].append(price)
+                            if len(self.data[symbol]) > self.max_history:
+                                self.data[symbol].pop(0)
+                            generated_data[symbol] = price
+                        return generated_data
+                
+                    def _generate_price(self, symbol):
+                        base_prices = {"BTC": 40000, "ETH": 2000, "DOGE": 0.1, "SOL": 20}
+                        volatility = {"BTC": 5000, "ETH": 500, "DOGE": 0.05, "SOL": 5}
+                        return round(random.uniform(
+                            base_prices[symbol] - volatility[symbol],
+                            base_prices[symbol] + volatility[symbol]
+                        ), 4)
+
+                        class TradingStrategies:
+    def __init__(self):
+        pass
+
+    def moving_average(self, price_history, window=5):
+        if len(price_history) < window:
+            return None
+        return sum(price_history[-window:]) / window
+
+    def simple_strategy(self, symbol, price_history):
+        if len(price_history) < 10:
+            return "HOLD"
+        short_term = self.moving_average(price_history, window=5)
+        long_term = self.moving_average(price_history, window=10)
+        if short_term and long_term:
+            if short_term < long_term:
+                return "BUY"
+            elif short_term > long_term:
+                return "SELL"
+        return "HOLD"
+
+    def random_strategy(self):
+        return random.choice(["BUY", "SELL", "HOLD"])
+
+        class Portfolio:
+    def __init__(self, initial_balance):
+        self.balance = initial_balance
+        self.holdings = {}
+
+    def update_holdings(self, symbol, quantity):
+        if symbol not in self.holdings:
+            self.holdings[symbol] = 0
+        self.holdings[symbol] += quantity
+
+    def can_buy(self, symbol, price, quantity):
+        return self.balance >= price * quantity
+
+    def buy(self, symbol, price, quantity):
+        if self.can_buy(symbol, price, quantity):
+            self.balance -= price * quantity
+            self.update_holdings(symbol, quantity)
+            return True
+        return False
+
+    def can_sell(self, symbol, quantity):
+        return self.holdings.get(symbol, 0) >= quantity
+
+    def sell(self, symbol, price, quantity):
+        if self.can_sell(symbol, quantity):
+            self.balance += price * quantity
+            self.update_holdings(symbol, -quantity)
+            return True
+        return False
+
+    def __str__(self):
+        return f"Balance: ${self.balance:.2f}, Holdings: {self.holdings}"
+        .
+├── market_data.py
+├── strategies.py
+├── portfolio.py
+├── trading_bot.py
+
+pip install flask
+
+from flask import Flask, request, jsonify
+import random
+import time
+
+app = Flask(__name__)
+
+# Simulated market data
+MARKET_DATA = {
+    "BTCUSDT": {"price": 40000, "volume": 1000},
+    "ETHUSDT": {"price": 2000, "volume": 5000},
+    "DOGEUSDT": {"price": 0.1, "volume": 1000000},
+    "SOLUSDT": {"price": 20, "volume": 3000},
+}
+
+# User account data
+USER_DATA = {
+    "balance": {"USDT": 10000, "BTC": 0.5, "ETH": 2, "DOGE": 1000, "SOL": 10},
+    "order_history": [],
+}
+
+# Simulate real-time market price updates
+def update_market_data():
+    for symbol in MARKET_DATA:
+        MARKET_DATA[symbol]["price"] = round(
+            MARKET_DATA[symbol]["price"] * random.uniform(0.98, 1.02), 2
+        )
+        MARKET_DATA[symbol]["volume"] = round(
+            MARKET_DATA[symbol]["volume"] * random.uniform(0.9, 1.1), 2
+        )
+
+
+@app.route("/api/v1/market/prices", methods=["GET"])
+def get_market_prices():
+    """Endpoint for market prices"""
+    update_market_data()
+    return jsonify({"success": True, "data": MARKET_DATA})
+
+
+@app.route("/api/v1/account/balance", methods=["GET"])
+def get_account_balance():
+    """Endpoint for account balance"""
+    return jsonify({"success": True, "data": USER_DATA["balance"]})
+
+
+@app.route("/api/v1/order", methods=["POST"])
+def place_order():
+    """Endpoint for placing an order"""
+    data = request.json
+    symbol = data.get("symbol")
+    side = data.get("side")  # BUY or SELL
+    quantity = data.get("quantity")
+
+    # Validate order
+    if symbol not in MARKET_DATA:
+        return jsonify({"success": False, "error": "Invalid symbol"}), 400
+    if side not in ["BUY", "SELL"]:
+        return jsonify({"success": False, "error": "Invalid side"}), 400
+    if quantity <= 0:
+        return jsonify({"success": False, "error": "Invalid quantity"}), 400
+
+    price = MARKET_DATA[symbol]["price"]
+    cost = price * quantity
+
+    # Process order
+    if side == "BUY":
+        if USER_DATA["balance"]["USDT"] >= cost:
+            USER_DATA["balance"]["USDT"] -= cost
+            USER_DATA["balance"][symbol.replace("USDT", "")] += quantity
+            USER_DATA["order_history"].append(
+                {"symbol": symbol, "side": side, "quantity": quantity, "price": price}
+            )
+            return jsonify({"success": True, "message": "Order placed successfully"})
+        else:
+            return jsonify({"success": False, "error": "Insufficient balance"}), 400
+
+    if side == "SELL":
+        asset = symbol.replace("USDT", "")
+        if USER_DATA["balance"].get(asset, 0) >= quantity:
+            USER_DATA["balance"][asset] -= quantity
+            USER_DATA["balance"]["USDT"] += cost
+            USER_DATA["order_history"].append(
+                {"symbol": symbol, "side": side, "quantity": quantity, "price": price}
+            )
+            return jsonify({"success": True, "message": "Order placed successfully"})
+        else:
+            return jsonify({"success": False, "error": "Insufficient holdings"}), 400
+
+
+@app.route("/api/v1/orders/history", methods=["GET"])
+def get_order_history():
+    """Endpoint for order history"""
+    return jsonify({"success": True, "data": USER_DATA["order_history"]})
+
+
+@app.route("/api/v1/ping", methods=["GET"])
+def ping():
+    """Health check endpoint"""
+    return jsonify({"success": True, "message": "Pong!"})
+
+
+@app.route("/api/v1/time", methods=["GET"])
+def server_time():
+    """Server time endpoint"""
+    return jsonify({"success": True, "data": {"serverTime": int(time.time() * 1000)}})
+
+
+@app.route("/api/v1/exchange/info", methods=["GET"])
+def exchange_info():
+    """Exchange information endpoint"""
+    symbols = [
+        {"symbol": key, "baseAsset": key.replace("USDT", ""), "quoteAsset": "USDT"}
+        for key in MARKET_DATA
+    ]
+    return jsonify({"success": True, "data": {"symbols": symbols}})
+
+
+if __name__ == "__main__":
+    app.run(debug=True, port=5000)
+
+    import requests
+
+BASE_URL = "http://127.0.0.1:5000/api/v1"
+
+# Get market prices
+response = requests.get(f"{BASE_URL}/market/prices")
+print(response.json())
+
+# Get account balance
+response = requests.get(f"{BASE_URL}/account/balance")
+print(response.json())
+
+# Place an order
+order_data = {"symbol": "BTCUSDT", "side": "BUY", "quantity": 0.01}
+response = requests.post(f"{BASE_URL}/order", json=order_data)
+print(response.json())
+
+# Get order history
+response = requests.get(f"{BASE_URL}/orders/history")
+print(response.json())
+
+import requests
+
+BASE_URL = "http://127.0.0.1:5000/api/v1"
+
+# Get market prices
+response = requests.get(f"{BASE_URL}/market/prices")
+print(response.json())
+
+# Get account balance
+response = requests.get(f"{BASE_URL}/account/balance")
+print(response.json())
+
+# Place an order
+order_data = {"symbol": "BTCUSDT", "side": "BUY", "quantity": 0.01}
+response = requests.post(f"{BASE_URL}/order", json=order_data)
+print(response.json())
+
+# Get order history
+response = requests.get(f"{BASE_URL}/orders/history")
+print(response.json())
+
+              </textarea>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js.js"></script>
+</body>
+</html>
